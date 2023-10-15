@@ -23,12 +23,19 @@ var image = "";
 
 //~creating db
 
+// const db = mysql.createConnection({
+// 	host: "localhost",
+// 	user: "root",
+// 	password: '',
+// 	database: "fos",
+// });
+
 const db = mysql.createConnection({
-	host: "localhost",
-	user: "root",
-	password: '',
-	database: "fos",
-});
+	host: process.env.DB_HOST,       // Replace with your database hostname
+	user: process.env.DB_USER,       // Replace with your database username
+	password: process.env.DB_PASS,   // Replace with your database password
+	database: process.env.DB_NAME,   // Replace with your database name
+  });
 
 //!___________________CRUD DASHBOARD____________________________
 
