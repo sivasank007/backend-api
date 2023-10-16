@@ -1,26 +1,28 @@
-const path = require("path")
+const path = require("path");
 
 module.exports = {
-    entry : {
-        main : './index.js'
-    },
-    output : {
-        path: path.join(__dirname,'dev-build'),
-        publicPath:'/',
-        filename:'[name].js',
-        clean:true
-    },
-    mode:'development',
-    target:'node',
-    //devtool:'source-map',
-    module : {
-        rules : [
-            {
-                test : /\.js$/,
-                exclude:/node_modules/,
-                loader:"babel-loader"
-            }
-
-        ]
-    }
-}
+  entry: {
+    main: './index.js'
+  },
+  output: {
+    path: path.join(__dirname, 'dev-build'),
+    publicPath: '/',
+    filename: '[name].js',
+    clean: true
+  },
+  mode: 'development',
+  target: 'node',
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: "babel-loader"
+      },
+      {
+        test: /\.html$/, // Add this rule to ignore .html files
+        use: 'ignore-loader'
+      }
+    ]
+  }
+};
