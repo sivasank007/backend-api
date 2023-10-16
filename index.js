@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 const multer = require("multer");
 const path = require("path");
 
+require('dotenv').config();
+
 //~ Authentication
 
 const jwt = require("jsonwebtoken")
