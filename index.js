@@ -87,7 +87,7 @@ app.get("/getdesiredmenuname/:id", (req, res) => {
 //*Display MENU_ITEMS table data
 
 app.get("/getmenuitemsdata", (req, res) => {
-	const sql = "SELECT * FROM menuitems";
+	const sql = "SELECT * FROM MENUITEMS";
 	db.query(sql, (err, data) => {
 		if (err) res.json(err);
 		return res.json(data);
@@ -97,7 +97,7 @@ app.get("/getmenuitemsdata", (req, res) => {
 //*Display desired 'MENU_ITEMS' table data
 
 app.get("/getmenuitemsdesireddata/:id", (req, res) => {
-	const sql = "SELECT * FROM menuitems where menuitemsid=?";
+	const sql = "SELECT * FROM MENUITEMS where menuitemsid=?";
 	const id = req.params.id;
 	db.query(sql, [id], (err, data) => {
 		if (err) res.json(err);
@@ -126,7 +126,7 @@ const upload = multer({ storage: storage });
 //*add MENU data
 
 app.post("/addmenu", (req, res) => {
-	const sql = "insert into menu (`menuname`,`menudescription`) values (?)";
+	const sql = "insert into MENU (`menuname`,`menudescription`) values (?)";
 	const val = [req.body.menuname, req.body.menudescription];
 	db.query(sql, [val], (err, data) => {
 		if (err) return res.json(err);
@@ -164,7 +164,7 @@ app.put("/updatemenu/:id", (req, res) => {
 	const { menuname, menudescription } = req.body;
 
 	const sql =
-		"update menu set `menuname`=?, `menudescription`=? where `menuid`=?";
+		"update MENU set `menuname`=?, `menudescription`=? where `menuid`=?";
 	const values = [menuname, menudescription, id];
 
 	db.query(sql, values, (err, data) => {
@@ -212,7 +212,7 @@ app.put("/updateproduct/:id", upload.single("image"), (req, res) => {
 
 app.delete("/deletemenu/:id", (req, res) => {
 	const id = req.params.id;
-	const q = `DELETE FROM menu WHERE menuid=${id}`;
+	const q = `DELETE FROM MENU WHERE menuid=${id}`;
 	db.query(q, (err, data) => {
 		if (err) {
 			res.json(err);
@@ -225,7 +225,7 @@ app.delete("/deletemenu/:id", (req, res) => {
 
 app.delete("/deletemenuitems/:id", (req, res) => {
 	const id = req.params.id;
-	const q = `DELETE FROM menuitems WHERE menuitemsid=${id}`;
+	const q = `DELETE FROM MENUITEMS WHERE menuitemsid=${id}`;
 	db.query(q, (err, data) => {
 		if (err) {
 			res.json(err);
@@ -238,7 +238,7 @@ app.delete("/deletemenuitems/:id", (req, res) => {
 
 app.delete("/deletemenuitemsmenu/:id", (req, res) => {
 	const id = req.params.id;
-	const q = `DELETE FROM menuitems WHERE menuid=${id}`;
+	const q = `DELETE FROM MENUITEMS WHERE menuid=${id}`;
 	db.query(q, (err, data) => {
 		if (err) {
 			res.json(err);
@@ -253,8 +253,8 @@ app.delete("/deletemenuitemsmenu/:id", (req, res) => {
 
 //* Registration route
 app.post('/adduser', async (req, res) => {
-	const checkemail = `SELECT mail FROM customer_registration WHERE mail = ?`;
-	const checkphoneNumber = `SELECT phnum FROM customer_registration WHERE phnum = ?`;
+	const checkemail = `SELECT mail FROM CUSTOMER_REGISTRATION WHERE mail = ?`;
+	const checkphoneNumber = `SELECT phnum FROM CUSTOMER_REGISTRATION WHERE phnum = ?`;
 	const email = req.body.mail;
 	const phone = req.body.phone;
   
@@ -284,7 +284,7 @@ app.post('/adduser', async (req, res) => {
 		];
   
 		const sql =
-		  "INSERT INTO customer_registration (customername, mail, phnum, password) VALUES (?)";
+		  "INSERT INTO CUSTOMER_REGISTRATION (customername, mail, phnum, password) VALUES (?)";
   
 		db.query(sql, [val], (err, result) => {
 		  if (err) {
@@ -307,7 +307,7 @@ app.post('/login', (req, res) => {
 	const { email,phoneNumber, password } = req.body;
   
 	//* Fetch user from the database using email or phone number
-	const getUserQuery = 'SELECT * FROM customer_registration WHERE mail = ? OR phnum = ?';
+	const getUserQuery = 'SELECT * FROM CUSTOMER_REGISTRATION WHERE mail = ? OR phnum = ?';
 	db.query(getUserQuery, [email,phoneNumber], (err, result) => {
 	  if (err) {
 		return res.status(500).json({ error: 'Internal Server Error' });
@@ -337,7 +337,7 @@ app.post('/login', (req, res) => {
 app.post("/checkadmin", (req, res) => {
 	const val = [req.body.mail, req.body.password];
 	const sql =
-		"SELECT * FROM adminlogin WHERE `adminMail` = ? and `adminPass` = ?";
+		"SELECT * FROM ADMINLOGIN WHERE `adminMail` = ? and `adminPass` = ?";
 	db.query(sql, val, (err, result) => {
 		if (result.length > 0) {
 			return res.json(result[0].adminId);
@@ -353,7 +353,7 @@ app.post("/checkadmin", (req, res) => {
 app.get("/getdesiredadmin/:id", (req, res) => {
 	const id = req.params.id;
 	const sql =
-		'SELECT * FROM adminlogin WHERE adminId = ?';
+		'SELECT * FROM ADMINLOGIN WHERE adminId = ?';
 	db.query(sql,id, (err, result) => {
 		if(err){
 			return res.json(err)
@@ -367,7 +367,7 @@ app.get("/getdesiredadmin/:id", (req, res) => {
 //*GET ALL USERS
 
 app.get("/getuser", (req, res) => {
-	const sql = "SELECT * FROM customer_registration";
+	const sql = "SELECT * FROM CUSTOMER_REGISTRATION";
 	const id = req.params.id;
 	db.query(sql, [id], (err, data) => {
 		if (err) res.json(err);
@@ -378,7 +378,7 @@ app.get("/getuser", (req, res) => {
 //*GET SPECIFIC USER 
 
 app.get("/getuser/:id", (req, res) => {
-	const sql = "SELECT * FROM customer_registration where customerID=?";
+	const sql = "SELECT * FROM CUSTOMER_REGISTRATION where customerID=?";
 	const id = req.params.id;
 	db.query(sql, [id], (err, data) => {
 		if (err) res.json(err);
@@ -393,7 +393,7 @@ app.put("/updateaccountdetails/:id", (req, res) => {
 	const { customerName } = req.body;
 
 	const sql =
-		"update customer_registration set `customername`=? where `customerID`=?";
+		"update CUSTOMER_REGISTRATION set `customername`=? where `customerID`=?";
 	const values = [customerName, id];
 
 	db.query(sql, values, (err, data) => {
@@ -411,7 +411,7 @@ app.put("/changepassword/:id", (req, res) => {
 	const { password } = req.body;
 
 	const sql =
-		"update customer_registration set `password`=? where `customerID`=?";
+		"update CUSTOMER_REGISTRATION set `password`=? where `customerID`=?";
 	const values = [password, id];
 
 	db.query(sql, values, (err, data) => {
@@ -428,7 +428,7 @@ app.put("/changepassword/:id", (req, res) => {
 
 app.get("/customerexistingaddress/:id", (req, res) => {
 	const id = req.params.id;
-	const sql = `SELECT * FROM customers_address where customerID=${id}`;
+	const sql = `SELECT * FROM CUSTOMERS_ADDRESS where customerID=${id}`;
 	db.query(sql, (err, data) => {
 		if (err) res.json(err);
 		return res.json(data);
@@ -439,7 +439,7 @@ app.get("/customerexistingaddress/:id", (req, res) => {
 
 app.post("/customeraddress", (req, res) => {
 	const sql =
-		"INSERT INTO customers_address (`customerID`,`customername`,`mail`,`address`,`pincode`,`city`,`state`,`phnum`) VALUES (?)";
+		"INSERT INTO CUSTOMERS_ADDRESS (`customerID`,`customername`,`mail`,`address`,`pincode`,`city`,`state`,`phnum`) VALUES (?)";
 	const val = [
 		req.body.cid,
 		req.body.name,
@@ -460,7 +460,7 @@ app.post("/customeraddress", (req, res) => {
 
 app.delete("/deleteaddress/:id", (req, res) => {
 	const id = req.params.id;
-	const q = `DELETE FROM customers_address WHERE addressID=${id}`;
+	const q = `DELETE FROM CUSTOMERS_ADDRESS WHERE addressID=${id}`;
 	db.query(q, (err, data) => {
 		if (err) {
 			res.json(err);
@@ -473,7 +473,7 @@ app.delete("/deleteaddress/:id", (req, res) => {
 
 app.get("/getaddress/:id", (req, res) => {
 	const id = req.params.id;
-	const sql = `SELECT * FROM customers_address WHERE addressID = ?`;
+	const sql = `SELECT * FROM CUSTOMERS_ADDRESS WHERE addressID = ?`;
 	db.query(sql, [id], (err, data) => {
 		if (err) {
 			res.json(err);
@@ -487,7 +487,7 @@ app.get("/getaddress/:id", (req, res) => {
 app.put("/editaddress/:id", (req, res) => {
 	const id = req.params.id;
 	const sql =
-		"UPDATE customers_address SET `CUSTOMERNAME` =?,`MAIL`=?,`ADDRESS`=?,`PINCODE`=?,`CITY`=?,`STATE`=?,`PHNUM`=? WHERE addressID=?";
+		"UPDATE CUSTOMERS_ADDRESS SET `CUSTOMERNAME` =?,`MAIL`=?,`ADDRESS`=?,`PINCODE`=?,`CITY`=?,`STATE`=?,`PHNUM`=? WHERE addressID=?";
 	db.query(
 		sql,
 		[
@@ -513,7 +513,7 @@ app.put("/editaddress/:id", (req, res) => {
 
 app.get("/cartdata/:id", (req, res) => {
 	const id = req.params.id;
-	const sql = "SELECT * FROM cart where customerId = ?";
+	const sql = "SELECT * FROM CART where customerId = ?";
 	db.query(sql, [id], (err, data) => {
 		if (err) res.json(err);
 		return res.json(data);
@@ -549,7 +549,7 @@ app.post("/handleResetCart/:id", (req, res) => {
 //*INCREMENT CART ITEM
 app.put("/cartincrement/:id", (req, res) => {
 	const id = req.params.id;
-	const sql = "update cart set count = count + 1 where cartid =?";
+	const sql = "update CART set count = count + 1 where cartid =?";
 	db.query(sql, [id], (err, data) => {
 		if (err) return res.json(err);
 		return res.json(data);
@@ -560,7 +560,7 @@ app.put("/cartincrement/:id", (req, res) => {
 
 app.put("/cartdecrement/:id", (req, res) => {
 	const id = req.params.id;
-	const sql = "update cart set count = count - 1 where cartid =?";
+	const sql = "update CART set count = count - 1 where cartid =?";
 	db.query(sql, [id], (err, data) => {
 		if (err) return res.json(err);
 		return res.json(data);
@@ -653,13 +653,13 @@ app.post("/orderdetails", (req, res) => {
 	totalBill = totalBill - (totalBill/10); //10 percent discount 
 	
 	const sql =
-		"INSERT INTO orderdetails (customerID, orderNumber, addressId, menuid, menuitemid, quantity, paymentMode, menuitems, price,delivermode) VALUES ?";
+		"INSERT INTO ORDERDETAILS (customerID, orderNumber, addressId, menuid, menuitemid, quantity, paymentMode, menuitems, price,delivermode) VALUES ?";
 	
 	// Insert data into the orderdetails table
 	db.query(sql, [values], (error, results) => {
 		if (error) {
 		console.error(error);
-		res.status(500).send("Error inserting into orderdetails");
+		res.status(500).send("Error inserting into ORDERDETAILS");
 		} else {
 			// Generate a random 3-digit number
 			const randomThreeDigitNumber = Math.floor(100 + Math.random() * 900);
@@ -671,7 +671,7 @@ app.post("/orderdetails", (req, res) => {
 			const invoiceNumber = `${randomThreeDigitNumber}${randomAlphabets}${year}${month}${day}${hours}${minutes}${seconds}`;
 		// After successfully inserting into orderdetails, insert into invoicedetails
 		const invoiceSql =
-			"INSERT INTO invoicedetails (invoiceNumber,orderNumber, customerID, addressId,totalBill) VALUES ?";
+			"INSERT INTO INVOICEDETAILS (invoiceNumber,orderNumber, customerID, addressId,totalBill) VALUES ?";
 		const invoiceValues = [[invoiceNumber,orderNumber, customerID, addressID,totalBill]];
 	
 		// Insert data into the invoicedetails table
@@ -706,7 +706,7 @@ app.post('/pushorderpending',(req,res)=>{
 		collectionTime
 	]);
 
-	const sql = "INSERT INTO orderpending  (menuid, menuitemid, count, menuitem, price,customerId,addressId,deliverymode) VALUES ?"
+	const sql = "INSERT INTO ORDERPENDING  (menuid, menuitemid, count, menuitem, price,customerId,addressId,deliverymode) VALUES ?"
 
 	db.query(sql,[values],(err,result)=>{
 		if(err){
@@ -716,7 +716,7 @@ app.post('/pushorderpending',(req,res)=>{
 })
 
 app.get('/getorderpending',(req,res)=>{
-	const sql = "select * from orderpending"
+	const sql = "select * from ORDERPENDING"
 	db.query(sql,(err,data)=>{
 		if(err){ 
 			return res.json(err)
@@ -729,7 +729,7 @@ app.get('/getorderpending',(req,res)=>{
 
 app.delete('/deleteorderpendingbyadmin/:id',(req,res)=>{
 	const {id} = req.params;
-	const sql = `delete from orderpending where pendingId = ${id}`
+	const sql = `delete from ORDERPENDING where pendingId = ${id}`
 	db.query(sql,(err,result)=>{
 		if(err){
 			return res.json(err)
@@ -741,7 +741,7 @@ app.delete('/deleteorderpendingbyadmin/:id',(req,res)=>{
 
 app.delete('/deleteordercompletedbyadmin/:id',(req,res)=>{
 	const {id} = req.params;
-	const sql = `delete from orderdetails where customer_orderID = ${id}`
+	const sql = `delete from ORDERDETAILS where customer_orderID = ${id}`
 	db.query(sql,(err,result)=>{
 		if(err){
 			return res.json(err)
@@ -753,7 +753,7 @@ app.delete('/deleteordercompletedbyadmin/:id',(req,res)=>{
  
 app.delete('/deleteorderpending/:id',(req,res)=>{
 	const {id} = req.params;
-	const sql = `delete from orderpending where customerId = ${id}`
+	const sql = `delete from ORDERPENDING where customerId = ${id}`
 	db.query(sql,(err,result)=>{
 		if(err){
 			return res.json(err)
@@ -765,7 +765,7 @@ app.delete('/deleteorderpending/:id',(req,res)=>{
 //*GET ORDER DETAILS
 
 app.get('/getorderdetails',(req,res)=>{
-	const sql = "SELECT * FROM orderdetails";
+	const sql = "SELECT * FROM ORDERDETAILS";
 	db.query(sql, (err, data) => {
 		if (err) res.json(err);
 		return res.json(data);
@@ -776,7 +776,7 @@ app.get('/getorderdetails',(req,res)=>{
 
 app.get('/getmonthlyorders', (req, res) => {
 	const month = req.query.selectedMonth;
-	const sql = `SELECT COUNT(*) AS totalOrders FROM orderdetails WHERE MONTH(orderdeddatetime) = ?`;
+	const sql = `SELECT COUNT(*) AS totalOrders FROM ORDERDETAILS WHERE MONTH(orderdeddatetime) = ?`;
    
 	db.query(sql, [month], (err, data) => {
 		if (err) res.json(err);
@@ -788,7 +788,7 @@ app.get('/getmonthlyorders', (req, res) => {
 
 app.get('/getdailyorderscount', (req, res) => {
 	const date = req.query.selectedDate; // Access the date from the query parameters
-	const sql = `SELECT COUNT(*) as totalOrders FROM orderdetails WHERE DATE(orderdeddatetime) = ?`;
+	const sql = `SELECT COUNT(*) as totalOrders FROM ORDERDETAILS WHERE DATE(orderdeddatetime) = ?`;
   
 	db.query(sql, [date], (err, data) => {
 	  if (err) res.json(err);
@@ -800,7 +800,7 @@ app.get('/getdailyorderscount', (req, res) => {
 //*GET INVOICE DETAILS
 
 app.get('/getinvoicedetails',(req,res)=>{
-	const sql = "SELECT * FROM invoicedetails";
+	const sql = "SELECT * FROM INVOICEDETAILS";
 	db.query(sql, (err, data) => {
 		if (err) res.json(err);
 		return res.json(data);
@@ -811,7 +811,7 @@ app.get('/getinvoicedetails',(req,res)=>{
 
 app.get('/getinvoicedetails/:id',(req,res)=>{
 	const id = req.params.id;
-	const sql = "SELECT * FROM invoicedetails where invoiceNumber = ?";
+	const sql = "SELECT * FROM INVOICEDETAILS where invoiceNumber = ?";
 	db.query(sql, [id], (err, data) => {
 		if (err) res.json(err);
 		return res.json(data[0]);
@@ -822,7 +822,7 @@ app.get('/getinvoicedetails/:id',(req,res)=>{
 
 app.get('/getorderdetails/:id',(req,res)=>{
 	const id = req.params.id;
-	const sql = "SELECT * FROM orderdetails WHERE `customerID` = ?";
+	const sql = "SELECT * FROM ORDERDETAILS WHERE `customerID` = ?";
 	db.query(sql,[id], (err, data) => {
 		if (err) res.json(err);
 		return res.json(data);
@@ -833,7 +833,7 @@ app.get('/getorderdetails/:id',(req,res)=>{
 
 app.get('/getorderedlist/:id',(req,res)=>{
 	const id = req.params.id;
-	const sql = "select * from orderdetails where orderNumber = ?"
+	const sql = "select * from ORDERDETAILS where orderNumber = ?"
 	db.query(sql,[id], (err, data) => {
 		if (err) res.json(err);
 		return res.json(data);
@@ -844,7 +844,7 @@ app.get('/getorderedlist/:id',(req,res)=>{
 
 app.get('/getorder',(req,res)=>{
 	const id = req.params.id;
-	const sql = "SELECT orderNumber, customerID, MAX(orderdeddatetime) AS order_datetime,GROUP_CONCAT(CONCAT(quantity, ' x ', menuitems) SEPARATOR '\n') AS order_items,SUM(price) AS total_amount FROM orderdetails GROUP BY orderNumber, customerID ORDER BY order_datetime"
+	const sql = "SELECT orderNumber, customerID, MAX(orderdeddatetime) AS order_datetime,GROUP_CONCAT(CONCAT(quantity, ' x ', menuitems) SEPARATOR '\n') AS order_items,SUM(price) AS total_amount FROM ORDERDETAILS GROUP BY orderNumber, customerID ORDER BY order_datetime"
 	db.query(sql,[id], (err, data) => {
 		if (err) res.json(err);
 		return res.json(data[0]);
@@ -860,7 +860,7 @@ app.get('/getdesiredordercount', (req, res) => {
         "SET @target_week2 = 31;",
         "SET @target_week3 = 32;",
         "SET @target_week4 = 52;",
-        "SELECT aw.week_number, YEAR(od.orderdeddatetime) AS year, COALESCE(COUNT(od.orderNumber), 0) AS weekly_order_count FROM (SELECT @target_week1 AS week_number UNION ALL SELECT @target_week2 UNION ALL SELECT @target_week3 UNION ALL SELECT @target_week4) AS aw LEFT JOIN orderdetails od ON aw.week_number = WEEK(od.orderdeddatetime) AND YEAR(od.orderdeddatetime) = YEAR(CURDATE()) GROUP BY aw.week_number, year ORDER BY year, aw.week_number;"
+        "SELECT aw.week_number, YEAR(od.orderdeddatetime) AS year, COALESCE(COUNT(od.orderNumber), 0) AS weekly_order_count FROM (SELECT @target_week1 AS week_number UNION ALL SELECT @target_week2 UNION ALL SELECT @target_week3 UNION ALL SELECT @target_week4) AS aw LEFT JOIN ORDERDETAILS od ON aw.week_number = WEEK(od.orderdeddatetime) AND YEAR(od.orderdeddatetime) = YEAR(CURDATE()) GROUP BY aw.week_number, year ORDER BY year, aw.week_number;"
     ];
 
     const results = [];
@@ -895,7 +895,7 @@ app.get('/getdesiredordercount', (req, res) => {
 //* get total order count
 
 app.get('/gettotalorderscount',(req,res)=>{
-	const sql = "select COUNT(*) as count from orderdetails"
+	const sql = "select COUNT(*) as count from ORDERDETAILS"
 	db.query(sql, (err, data) => {
 		if (err) res.json(err);
 		return res.json(data[0]);
@@ -906,7 +906,7 @@ app.get('/gettotalorderscount',(req,res)=>{
 //* get total customer
 
 app.get('/gettotalcustomerscount',(req,res)=>{
-	const sql = "select COUNT(*) as count from customer_registration"
+	const sql = "select COUNT(*) as count from CUSTOMER_REGISTRATION"
 	db.query(sql, (err, data) => {
 		if (err) res.json(err);
 		return res.json(data[0]);
@@ -917,7 +917,7 @@ app.get('/gettotalcustomerscount',(req,res)=>{
 //* get total menu
 
 app.get('/gettotalmenucount',(req,res)=>{
-	const sql = "select COUNT(*) as count from menu"
+	const sql = "select COUNT(*) as count from MENU"
 	db.query(sql, (err, data) => {
 		if (err) res.json(err);
 		return res.json(data[0]);
@@ -928,7 +928,7 @@ app.get('/gettotalmenucount',(req,res)=>{
 //* get total menu items
 
 app.get('/gettotalmenuitemscount',(req,res)=>{
-	const sql = "select COUNT(*) as count from menuitems"
+	const sql = "select COUNT(*) as count from MENUITEMS"
 	db.query(sql, (err, data) => {
 		if (err) res.json(err);
 		return res.json(data[0]);
@@ -938,7 +938,7 @@ app.get('/gettotalmenuitemscount',(req,res)=>{
 //* get recent 5 order request
 
 app.get('/getrecentorders',(req,res)=>{
-	const sql = "SELECT * FROM fos.orderdetails order by orderdeddatetime DESC limit 4"
+	const sql = "SELECT * FROM ORDERDETAILS order by orderdeddatetime DESC limit 4"
 	db.query(sql, (err, data) => {
 		if (err) res.json(err);
 		return res.json(data);
