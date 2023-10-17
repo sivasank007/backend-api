@@ -32,6 +32,12 @@ const db = mysql.createConnection({
 	database: process.env.DB_NAME,   // Replace with your database name
   });
 
+//*check---
+
+app.get('/getmsg',(req,res)=>{
+	return res.json("Hey, I'm alive!")
+})
+
 //!___________________CRUD DASHBOARD____________________________
 
 //~--------------------READ OPERATION---------------------------
