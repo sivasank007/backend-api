@@ -19,6 +19,16 @@ app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(cors());
+
+const corsOptions = {
+	origin: ["https://fos-admin.netlify.app", "https://fos-client.netlify.app"],
+	methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+	credentials: true, // enable set cookie
+	optionsSuccessStatus: 204,
+  };
+  
+  app.use(cors(corsOptions));  
+
 app.use(cookieParser());
 
 var image = "";
