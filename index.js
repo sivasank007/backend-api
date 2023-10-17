@@ -929,7 +929,7 @@ app.get('/getrecentorders',(req,res)=>{
 	});
 })
 
-const port = process.env.PORT || 3306; // Use the PORT environment variable if available
+const port = process.env.PORT || 5555; // Use the PORT environment variable if available
 
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
