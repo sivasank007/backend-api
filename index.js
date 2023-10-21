@@ -452,7 +452,7 @@ app.post("/customeraddress", (req, res) => {
 	];
 	db.query(sql, [val], (err, data) => {
 		if (err) return res.json(err);
-		return "success";
+		res.send("Success");
 	});
 });
 
